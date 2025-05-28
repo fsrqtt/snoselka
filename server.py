@@ -3,8 +3,8 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 USERS = {
-    "admin": "789456123";
-    "provosudie": "ebalay1346";
+    "admin": "789456123",
+    "provosudie": "ebalay1346",
     "cultionpanic": "789456123"
 }
 
