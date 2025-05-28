@@ -47,7 +47,7 @@ print(f'{COLOR_CODE["CYAN"]}[+]{COLOR_CODE["BOLD"]} НАЖМИ enter {COLOR_CODE
 
 
 def menu():
-    choice = input(f'{COLOR_CODE["RED"]}[+]{COLOR_CODE["BOLD"]} Выбрать >{COLOR_CODE["RED"]} ')
+    choice = input('Выбрать >')
     return choice
 
 def send_email(receiver, sender, password, subject, body, image_dir='images'):
