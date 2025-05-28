@@ -1,16 +1,31 @@
-from flask import Flask, request
-from psychic_snoser import main  # твой основной функционал
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "Snoser is online!"
+USERS = {
+    "admin": "1234"
+}
 
-@app.route('/run', methods=['POST'])
-def run():
-    main()  # вызываем твой основной код
-    return "Script executed."
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    if USERS.get(username) == password:
+        return jsonify({"status": "ok", "message": "Авторизация прошла успешно"})
+    else:
+        return jsonify({"status": "error", "message": "Неверный логин или пароль"}), 401
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+@app.route('/command', methods=['POST'])
+def command():
+    data = request.json
+    cmd = data.get('command')
+    if cmd == "run":
+        return jsonify({"message": "Команда выполнена"})
+    elif cmd == "exit":
+        return jsonify({"message": "Завершение соединения"})
+    else:
+        return jsonify({"message": "Неизвестная команда"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
