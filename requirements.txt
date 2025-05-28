@@ -3,3 +3,4 @@ pystyle
 requests
 fake-useragent
 termcolor
+flask
