@@ -43,7 +43,8 @@ def logo():
     os.system('cls' if os.name == 'nt' else 'clear')
     banner_with_ikon = f"{Colorate.Horizontal(Colors.blue_to_white, Center.XCenter(banner))}   {Colorate.Horizontal(Colors.blue_to_cyan, Center.XCenter(ikon))}"
     print(banner_with_ikon)
-select = input(f'{COLOR_CODE["CYAN"]}[+]{COLOR_CODE["BOLD"]} НАЖМИ enter {COLOR_CODE["RED"]} ')
+print(f'{COLOR_CODE["CYAN"]}[+]{COLOR_CODE["BOLD"]} НАЖМИ enter {COLOR_CODE["RED"]} ')
+
 
 def menu():
     choice = input(f'{COLOR_CODE["RED"]}[+]{COLOR_CODE["BOLD"]} Выбрать >{COLOR_CODE["RED"]} ')
