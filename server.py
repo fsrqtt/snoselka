@@ -1,49 +1,43 @@
-import requests
+```python
 from flask import Flask, request, jsonify
-import subprocess
-import sys
+import os
 
 app = Flask(__name__)
 
+# Бд пользователей
 USERS = {
-    "admin": "789456123",
-    "provosudie": "ebalay1346",
+    "admin": "12345678",
     "cultionpanic": "789456123"
 }
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    if USERS.get(username) == password:
-        return jsonify({"status": "ok", "message": "Авторизация прошла успешно"})
+
+    if not username or not password:
+        return jsonify({"status": "error", "message": "Логин и пароль обязательны"}), 400
+
+    if username in USERS and USERS[username] == password:
+        return jsonify({"status": "ok", "message": f"Добро пожаловать, {username}!"}), 200
     else:
         return jsonify({"status": "error", "message": "Неверный логин или пароль"}), 401
 
 @app.route('/command', methods=['POST'])
 def command():
-    data = request.json
-    cmd = data.get('command')
-    if cmd == "run":
-        try:
-            url = "https://raw.githubusercontent.com/fsrqtt/snoselka/refs/heads/main/psychic_snoser.py"
-            r = requests.get(url)
-            if r.status_code != 200:
-                return jsonify({"message": "Не удалось скачать скрипт с GitHub"}), 500
+    data = request.get_json()
+    command = data.get('command')
+    
+    if command not in ("run", "exit"):
+        return jsonify({"status": "error", "message": "Неизвестная команда"}), 400
+    
+    if command == "run":
+        return jsonify({"status": "ok", "message": "Команда выполнена", "output": "Пример вывода скрипта"})
+    elif command == "exit":
+        return jsonify({"status": "ok", "message": "Выход из системы"})
 
-            with open("temp_script.py", "w", encoding="utf-8") as f:
-                f.write(r.text)
-
-            result = subprocess.run([sys.executable, "temp_script.py"], capture_output=True, text=True, timeout=30)
-
-            return jsonify({"message": "Команда выполнена", "output": result.stdout, "error": result.stderr})
-        except Exception as e:
-            return jsonify({"message": f"Ошибка при выполнении команды: {str(e)}"}), 500
-    elif cmd == "exit":
-        return jsonify({"message": "Завершение соединения"})
-    else:
-        return jsonify({"message": "Неизвестная команда"})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  # Render использует переменную PORT
+    app.run(host='0.0.0.0', port=port)
+```
