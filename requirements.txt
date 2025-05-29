@@ -1,6 +1,7 @@
+flask
+smtplib
 colorama
 pystyle
 requests
 fake-useragent
 termcolor
-flask
