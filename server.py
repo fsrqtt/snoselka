@@ -4,7 +4,8 @@ import os
 app = Flask(__name__)
 
 USERS = {
-    "admin": "12345678",
+    "admin": "789456123",
+    "Skizzy": "Skizzy13371337",
     "cultionpanic": "789456123"
 }
 
