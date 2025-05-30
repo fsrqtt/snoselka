@@ -19,7 +19,7 @@ def login():
     if username in USERS and USERS[username] == password:
         return jsonify({"status": "ok", "message": f"Добро пожаловать, {username}!"}), 200
     else:
-        return jsonify({"status": "error", "message": "Неверный логин или пароль"}), 401
+        return jsonify({"status": "error", "message": "Неверный логин или пароль, напишите @cultionpanic или @tenevoypanic для выяснения обстоятельств"}), 401
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
